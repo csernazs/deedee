@@ -9,7 +9,7 @@ def context():
     return deedee.Context()
 
 
-def test_example1(context):
+def test_positional(context):
     @deedee.resolve
     def example(param1, param2, param3=context.example):
         return (param1, param2, param3)
@@ -20,7 +20,7 @@ def test_example1(context):
     assert example(param2="b", param1="a") == ("a", "b", "foobar")
 
 
-def test_example1_override(context):
+def test_override(context):
     @deedee.resolve
     def example(param1, param2, param3=context.example):
         return (param1, param2, param3)
@@ -31,7 +31,7 @@ def test_example1_override(context):
     assert example(param3="c", param1="a", param2="b") == ("a", "b", "c")
 
 
-def test_example_kwargs(context):
+def test_kwargs(context):
     @deedee.resolve
     def example_kwargs(param1, param2, *, param3=context.example_kwargs):
         return (param1, param2, param3)
@@ -40,7 +40,7 @@ def test_example_kwargs(context):
     assert example_kwargs("a", "b") == ("a", "b", "foobar")
 
 
-def test_example_multiple(context):
+def test_multiple(context):
     @deedee.resolve
     def example_multiple(param1=context.p1, param2=context.p2, param3=context.p3):
         return (param1, param2, param3)
@@ -54,7 +54,7 @@ def test_example_multiple(context):
     assert example_multiple(1, 2, 3) == (1, 2, 3)
 
 
-def test_example_mutable(context):
+def test_mutable(context):
     @deedee.resolve
     def example_mutable(param1=context.p1):
         return param1
