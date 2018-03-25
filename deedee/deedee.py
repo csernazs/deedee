@@ -1,6 +1,7 @@
 
 import functools
 import inspect
+from abc import ABC, abstractmethod
 
 
 class Unset:
@@ -16,14 +17,10 @@ class AlreadyRegistered(Exception):
     pass
 
 
-class LazyValue:
-    def __init__(self):
-        self.value = UNSET
-
+class LazyValue(ABC):
+    @abstractmethod
     def resolve(self):
-        if self.value is UNSET:
-            raise ResolveError("Unable to resolve lazy value")
-        return self.value
+        pass
 
 
 class ContextValue(LazyValue):
@@ -33,15 +30,14 @@ class ContextValue(LazyValue):
         self._key = key
 
     def resolve(self):
-        if self.value is UNSET:
-            try:
-                self.value = self._registry[self._key]
-            except KeyError:
-                raise ResolveError("Key {!r} is undefined".format(self._key)) from None
-        return self.value
+        try:
+            value = self._registry[self._key]
+        except KeyError:
+            raise ResolveError("Key {!r} is undefined".format(self._key)) from None
+        return value
 
     def __repr__(self):
-        return "<ContextValue for {!r} set to {!r}>".format(self._key, self.value)
+        return "<ContextValue for {!r}>".format(self._key)
 
 
 class Context:

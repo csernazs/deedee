@@ -3,16 +3,25 @@ import pytest
 import deedee
 
 
-def test_lazyvalue():
-    lv = deedee.LazyValue()
-    lv.value = 1234
-    assert lv.resolve() == lv.value
-
-
 def test_contextvalue():
     registry = {"foo": "bar"}
     cv = deedee.ContextValue(registry, "foo")
     assert cv.resolve() == "bar"
+
+
+def test_contextvalue_repr():
+    registry = {"foo": "bar"}
+    cv = deedee.ContextValue(registry, "foo")
+
+    assert isinstance(repr(cv), str)
+
+
+def test_contextvalue_registry_changed():
+    registry = {"foo": "bar"}
+    cv = deedee.ContextValue(registry, "foo")
+    assert cv.resolve() == "bar"
+    registry["foo"] = "new_value"
+    assert cv.resolve() == "new_value"
 
 
 def test_contextvalue_non_existing_key():

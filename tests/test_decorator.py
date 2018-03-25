@@ -66,3 +66,15 @@ def test_mutable(context):
 
     assert example_mutable() == [1, 5]
     assert example_mutable() is v1
+
+
+def test_force_register(context):
+    @deedee.resolve
+    def example(param1=context.p1):
+        return param1
+
+    context.register("p1", 1)
+    assert example() == 1
+
+    context.register("p1", 2, force=True)
+    assert example() == 2
