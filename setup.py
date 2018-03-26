@@ -14,6 +14,8 @@ setup(
     author_email="zsolt.cserna@gmail.com",
     description="Deedee is a dependency inversion library",
     long_description=DESCRIPTION,
+    setup_requires=["pytest-runner"],
+    tests_require=["pytest"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
